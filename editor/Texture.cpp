@@ -10,14 +10,14 @@ Texture::Texture(std::string path) {
     if (!surface) {
         fprintf(stderr, "[ERROR] Failed to load image: %s\n", texPath.c_str());
     }
-    
+
 //    std::string savePath = "/Users/Noah/Desktop/test";
 //    savePath.append(std::to_string(count++));
 //    savePath.append(".bmp");
 //    if (SDL_SaveBMP(surface, savePath.c_str()) != 0) {
 //        printf("Could not save file %s\n", SDL_GetError());
 //    }
-    
+
     width = surface->w;
     height = surface->h;
 
@@ -36,7 +36,9 @@ Texture::Texture(std::string path) {
     }
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    
+
     glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
     glGenerateMipmap(GL_TEXTURE_2D);
+
+    glBindTexture(GL_TEXTURE_2D, 0);
 }
