@@ -12,7 +12,7 @@ Window::Window(int width, int height, std::string title) {
     }
 
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
+    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
     SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
 
@@ -44,6 +44,8 @@ Window::Window(int width, int height, std::string title) {
 		exit(EXIT_FAILURE);
 	}
 #endif
+    
+    printf("%s\n", glGetString(GL_EXTENSIONS));
     isOpen = true;
 
     SDL_GL_SetSwapInterval(1);

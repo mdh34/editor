@@ -7,10 +7,6 @@
 #include "Window.h"
 #include "ShaderProgram.h"
 
-#include "Buffer.h"
-#include "IndexBuffer.h"
-#include "VertexArray.h"
-
 #include "Renderer.h"
 #include "Renderable2D.h"
 
@@ -28,16 +24,12 @@ int main(int argc, char** args) {
 
 		int width = 1000;
 		int height = width / 16 * 9;
-    Window window(width, height, "Game Engine | Editor");
-
-    ShaderProgram program("/res/shaders/texture");
-    program.createUniform("mvpMatrix");
-    program.createUniform("texSampler");
+    Window window(width, height, "Editor");
 
     projection = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f);
 
     Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(500, 500));
-    sprite.texture = Texture(std::string("/res/textures/banana.png"));
+    
     Renderer renderer;
 
     renderer.projectionMatrix = projection;
@@ -45,6 +37,8 @@ int main(int argc, char** args) {
     renderer.modelMatrix = glm::mat4();
 
     renderer.mvpMatrix = glm::mat4();
+    
+    glm::vec4 col(1, 0, 1, 1);
 
     float time = 0;
     while (window.isOpen) {
@@ -53,7 +47,7 @@ int main(int argc, char** args) {
         window.clear();
         window.poll();
 
-        renderer.drawRenderable(sprite, program);
+        renderer.fillQuad(sprite, col);
 
         window.flip();
         SDL_Delay(5);

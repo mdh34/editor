@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <iostream>
 
+#define GL_GLEXT_PROTOTYPES 1
+#define GL3_PROTOTYPES 1
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
@@ -13,6 +15,7 @@
     #include <GL/glew.h>
 #else
     #include <OpenGL/gl3.h>
+    #include <OpenGL/gl3ext.h>
 #endif
 
 #include "GLError.h"

@@ -8,14 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4F1886FC1F6BFB2600EC615B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1886FB1F6BFB2600EC615B /* SDL2.framework */; };
-		4FDB8DE41F6C76BD00066144 /* Buffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DD01F6C76BD00066144 /* Buffer.cpp */; };
 		4FDB8DE61F6C76BD00066144 /* GLError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DD41F6C76BD00066144 /* GLError.cpp */; };
-		4FDB8DE71F6C76BD00066144 /* IndexBuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DD61F6C76BD00066144 /* IndexBuffer.cpp */; };
 		4FDB8DE81F6C76BD00066144 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DD91F6C76BD00066144 /* Renderer.cpp */; };
 		4FDB8DE91F6C76BD00066144 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DDB1F6C76BD00066144 /* ShaderProgram.cpp */; };
 		4FDB8DEA1F6C76BD00066144 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DDD1F6C76BD00066144 /* Texture.cpp */; };
 		4FDB8DEB1F6C76BD00066144 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DDF1F6C76BD00066144 /* Util.cpp */; };
-		4FDB8DEC1F6C76BD00066144 /* VertexArray.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DE11F6C76BD00066144 /* VertexArray.cpp */; };
 		4FDB8DED1F6C76BD00066144 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DE31F6C76BD00066144 /* Window.cpp */; };
 		4FDB8DEF1F6C76E500066144 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DEE1F6C76E500066144 /* main.cpp */; };
 		4FDB8DF11F6C775F00066144 /* SDL2_image.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDB8DF01F6C775F00066144 /* SDL2_image.framework */; };
@@ -40,12 +37,8 @@
 		4F1886F01F6BFAFB00EC615B /* editor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = editor; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1886FB1F6BFB2600EC615B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
 		4FDB8DCF1F6C746500066144 /* Window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
-		4FDB8DD01F6C76BD00066144 /* Buffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Buffer.cpp; sourceTree = "<group>"; };
-		4FDB8DD11F6C76BD00066144 /* Buffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Buffer.h; sourceTree = "<group>"; };
 		4FDB8DD41F6C76BD00066144 /* GLError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLError.cpp; sourceTree = "<group>"; };
 		4FDB8DD51F6C76BD00066144 /* GLError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLError.h; sourceTree = "<group>"; };
-		4FDB8DD61F6C76BD00066144 /* IndexBuffer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IndexBuffer.cpp; sourceTree = "<group>"; };
-		4FDB8DD71F6C76BD00066144 /* IndexBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndexBuffer.h; sourceTree = "<group>"; };
 		4FDB8DD81F6C76BD00066144 /* Renderable2D.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderable2D.h; sourceTree = "<group>"; };
 		4FDB8DD91F6C76BD00066144 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		4FDB8DDA1F6C76BD00066144 /* Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Renderer.h; sourceTree = "<group>"; };
@@ -55,8 +48,6 @@
 		4FDB8DDE1F6C76BD00066144 /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Texture.h; sourceTree = "<group>"; };
 		4FDB8DDF1F6C76BD00066144 /* Util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Util.cpp; sourceTree = "<group>"; };
 		4FDB8DE01F6C76BD00066144 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
-		4FDB8DE11F6C76BD00066144 /* VertexArray.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VertexArray.cpp; sourceTree = "<group>"; };
-		4FDB8DE21F6C76BD00066144 /* VertexArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VertexArray.h; sourceTree = "<group>"; };
 		4FDB8DE31F6C76BD00066144 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		4FDB8DEE1F6C76E500066144 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		4FDB8DF01F6C775F00066144 /* SDL2_image.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2_image.framework; path = ../../../../../Library/Frameworks/SDL2_image.framework; sourceTree = "<group>"; };
@@ -357,12 +348,8 @@
 			children = (
 				4FDB8DF41F6C815B00066144 /* glm */,
 				4FDB8DEE1F6C76E500066144 /* main.cpp */,
-				4FDB8DD01F6C76BD00066144 /* Buffer.cpp */,
-				4FDB8DD11F6C76BD00066144 /* Buffer.h */,
 				4FDB8DD41F6C76BD00066144 /* GLError.cpp */,
 				4FDB8DD51F6C76BD00066144 /* GLError.h */,
-				4FDB8DD61F6C76BD00066144 /* IndexBuffer.cpp */,
-				4FDB8DD71F6C76BD00066144 /* IndexBuffer.h */,
 				4FDB8DD81F6C76BD00066144 /* Renderable2D.h */,
 				4FDB8DD91F6C76BD00066144 /* Renderer.cpp */,
 				4FDB8DDA1F6C76BD00066144 /* Renderer.h */,
@@ -372,8 +359,6 @@
 				4FDB8DDE1F6C76BD00066144 /* Texture.h */,
 				4FDB8DDF1F6C76BD00066144 /* Util.cpp */,
 				4FDB8DE01F6C76BD00066144 /* Util.h */,
-				4FDB8DE11F6C76BD00066144 /* VertexArray.cpp */,
-				4FDB8DE21F6C76BD00066144 /* VertexArray.h */,
 				4FDB8DE31F6C76BD00066144 /* Window.cpp */,
 				4FDB8DCF1F6C746500066144 /* Window.h */,
 			);
@@ -748,14 +733,11 @@
 				4FDB8DED1F6C76BD00066144 /* Window.cpp in Sources */,
 				4FDB8DEB1F6C76BD00066144 /* Util.cpp in Sources */,
 				4FDB8DE81F6C76BD00066144 /* Renderer.cpp in Sources */,
-				4FDB8DE71F6C76BD00066144 /* IndexBuffer.cpp in Sources */,
 				4FDB8DEF1F6C76E500066144 /* main.cpp in Sources */,
-				4FDB8DEC1F6C76BD00066144 /* VertexArray.cpp in Sources */,
 				4FDB8DE91F6C76BD00066144 /* ShaderProgram.cpp in Sources */,
 				4FDB8EFB1F6C815B00066144 /* dummy.cpp in Sources */,
 				4FDB8DE61F6C76BD00066144 /* GLError.cpp in Sources */,
 				4FDB8DEA1F6C76BD00066144 /* Texture.cpp in Sources */,
-				4FDB8DE41F6C76BD00066144 /* Buffer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

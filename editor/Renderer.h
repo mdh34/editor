@@ -4,6 +4,10 @@
 
 #ifdef _WIN32
     #include <GL/glew.h>
+#else
+    #include <OpenGL/gl3.h>    
+    #include <OpenGL/gl3ext.h>    
+    #include <SDL2/SDL_opengl.h>
 #endif
 
 #include "ShaderProgram.h"
@@ -18,9 +22,20 @@ typedef struct Renderer {
 
     glm::mat4 mvpMatrix;
 
+    ShaderProgram COLOUR_SHADER;
+    ShaderProgram TEXTURE_SHADER;
+
+    GLfloat vertices[12];
+    GLushort indices[6];
+    GLfloat texCoords[8];
+
+    GLuint vaoID;
+    GLuint posVBO;
+    
+    
     Renderer();
 
-    void drawRenderable(Renderable2D& renderable, ShaderProgram& program);
+    void fillQuad(Renderable2D& renderable, glm::vec4& colour);
 
 } Renderer;
 
