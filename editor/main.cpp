@@ -15,8 +15,6 @@
 #include "glm/gtx/transform.hpp"
 #include "glm/gtx/string_cast.hpp"
 
-#include <math.h>
-
 glm::mat4 projection;
 int main(int argc, char** args) {
 
@@ -28,7 +26,7 @@ int main(int argc, char** args) {
 
     projection = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f);
 
-    Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(500, 500));
+    Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(10, 10));
     
     Renderer renderer;
 
@@ -39,6 +37,8 @@ int main(int argc, char** args) {
     renderer.mvpMatrix = glm::mat4();
     
     glm::vec4 col(1, 0, 1, 1);
+    
+    renderer.init();
 
     float time = 0;
     while (window.isOpen) {

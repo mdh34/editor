@@ -36,6 +36,8 @@
 /* Begin PBXFileReference section */
 		4F1886F01F6BFAFB00EC615B /* editor */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = editor; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F1886FB1F6BFB2600EC615B /* SDL2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SDL2.framework; path = ../../../../../Library/Frameworks/SDL2.framework; sourceTree = "<group>"; };
+		4FB894271F706BE1005EE2CD /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = ../../../../../usr/local/Cellar/freetype/2.8.1/lib/libfreetype.a; sourceTree = "<group>"; };
+		4FB894281F706BE1005EE2CD /* libfreetype.6.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfreetype.6.dylib; path = ../../../../../usr/local/Cellar/freetype/2.8.1/lib/libfreetype.6.dylib; sourceTree = "<group>"; };
 		4FDB8DCF1F6C746500066144 /* Window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		4FDB8DD41F6C76BD00066144 /* GLError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GLError.cpp; sourceTree = "<group>"; };
 		4FDB8DD51F6C76BD00066144 /* GLError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLError.h; sourceTree = "<group>"; };
@@ -368,6 +370,8 @@
 		4F1886FA1F6BFB2600EC615B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4FB894271F706BE1005EE2CD /* libfreetype.a */,
+				4FB894281F706BE1005EE2CD /* libfreetype.6.dylib */,
 				4FDB8EFD1F6C83E500066144 /* OpenGL.framework */,
 				4FDB8DF01F6C775F00066144 /* SDL2_image.framework */,
 				4F1886FB1F6BFB2600EC615B /* SDL2.framework */,
@@ -844,6 +848,10 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				HEADER_SEARCH_PATHS = "/Users/noah/Documents/dev/editor/dependencies/glm/**";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/freetype/2.8.1/lib,
+				);
 				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -861,6 +869,10 @@
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
 				HEADER_SEARCH_PATHS = "/Users/noah/Documents/dev/editor/dependencies/glm/**";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/freetype/2.8.1/lib,
+				);
 				MACH_O_TYPE = mh_execute;
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";

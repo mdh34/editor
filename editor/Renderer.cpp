@@ -18,8 +18,11 @@ texCoords{0, 1,
     COLOUR_SHADER.createUniform("colour");
     COLOUR_SHADER.createUniform("mvpMatrix");
 //    TEXTURE_SHADER = ShaderProgram("/res/shaders/texture");
+    
+}
 
-    glGenVertexArrays(GL_ARRAY_BUFFER, &vaoID);
+void Renderer::init() {
+    glGenVertexArrays(1, &vaoID);
     glBindVertexArray(vaoID);
     
     glGenBuffers(1, &posVBO);
@@ -27,6 +30,11 @@ texCoords{0, 1,
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
+    
+    glGenBuffers(1, &indexVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), &indices[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     
     glBindVertexArray(0);
 }
@@ -45,8 +53,13 @@ void Renderer::fillQuad(Renderable2D& renderable, glm::vec4& colour) {
 
     glBindVertexArray(vaoID);
     glEnableVertexAttribArray(0);
-    glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / 3);
+//    glDrawArrays(GL_TRIANGLES, 0, sizeof(vertices) / 3);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
+    
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*) 0);
+    
     glDisableVertexAttribArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 
     COLOUR_SHADER.unbind();

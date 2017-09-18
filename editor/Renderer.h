@@ -31,10 +31,12 @@ typedef struct Renderer {
 
     GLuint vaoID;
     GLuint posVBO;
-    
+    GLuint indexVBO;
     
     Renderer();
 
+    void init();
+    
     void fillQuad(Renderable2D& renderable, glm::vec4& colour);
 
 } Renderer;
