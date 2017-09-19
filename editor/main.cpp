@@ -15,6 +15,8 @@
 #include "glm/gtx/transform.hpp"
 #include "glm/gtx/string_cast.hpp"
 
+#include <ft2build.h>
+
 glm::mat4 projection;
 int main(int argc, char** args) {
 
