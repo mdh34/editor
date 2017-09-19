@@ -852,6 +852,7 @@
 				HEADER_SEARCH_PATHS = (
 					"/Users/noah/Documents/dev/editor/dependencies/glm/**",
 					"/Users/noah/Documents/dev/editor/dependencies/freetype/**",
+					"/Users/noah/Documents/dev/editor/editor/freetype-gl/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -876,6 +877,7 @@
 				HEADER_SEARCH_PATHS = (
 					"/Users/noah/Documents/dev/editor/dependencies/glm/**",
 					"/Users/noah/Documents/dev/editor/dependencies/freetype/**",
+					"/Users/noah/Documents/dev/editor/editor/freetype-gl/**",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

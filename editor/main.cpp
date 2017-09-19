@@ -18,6 +18,7 @@
 #include "GLError.h"
 
 #include <ft2build.h>
+#include FT_FREETYPE_H
 
 glm::mat4 projection;
 int main(int argc, char** args) {
