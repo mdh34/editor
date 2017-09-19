@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		4F1886FC1F6BFB2600EC615B /* SDL2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4F1886FB1F6BFB2600EC615B /* SDL2.framework */; };
+		4FB8942C1F7070BE005EE2CD /* libfreetype.6.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FB894281F706BE1005EE2CD /* libfreetype.6.dylib */; };
 		4FDB8DE61F6C76BD00066144 /* GLError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DD41F6C76BD00066144 /* GLError.cpp */; };
 		4FDB8DE81F6C76BD00066144 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DD91F6C76BD00066144 /* Renderer.cpp */; };
 		4FDB8DE91F6C76BD00066144 /* ShaderProgram.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DDB1F6C76BD00066144 /* ShaderProgram.cpp */; };
@@ -319,6 +320,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FB8942C1F7070BE005EE2CD /* libfreetype.6.dylib in Frameworks */,
 				4FDB8EFF1F6C840400066144 /* OpenGL.framework in Frameworks */,
 				4FDB8DF11F6C775F00066144 /* SDL2_image.framework in Frameworks */,
 				4F1886FC1F6BFB2600EC615B /* SDL2.framework in Frameworks */,
@@ -847,7 +849,10 @@
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
-				HEADER_SEARCH_PATHS = "/Users/noah/Documents/dev/editor/dependencies/glm/**";
+				HEADER_SEARCH_PATHS = (
+					"/Users/noah/Documents/dev/editor/dependencies/glm/**",
+					"/Users/noah/Documents/dev/editor/dependencies/freetype/**",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/freetype/2.8.1/lib,
@@ -868,7 +873,10 @@
 					"$(LOCAL_LIBRARY_DIR)/Frameworks",
 				);
 				GCC_NO_COMMON_BLOCKS = NO;
-				HEADER_SEARCH_PATHS = "/Users/noah/Documents/dev/editor/dependencies/glm/**";
+				HEADER_SEARCH_PATHS = (
+					"/Users/noah/Documents/dev/editor/dependencies/glm/**",
+					"/Users/noah/Documents/dev/editor/dependencies/freetype/**",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					/usr/local/Cellar/freetype/2.8.1/lib,

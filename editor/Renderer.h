@@ -5,13 +5,14 @@
 #ifdef _WIN32
     #include <GL/glew.h>
 #else
-    #include <OpenGL/gl3.h>    
-    #include <OpenGL/gl3ext.h>    
+    #include <OpenGL/gl3.h>
+    #include <OpenGL/gl3ext.h>
     #include <SDL2/SDL_opengl.h>
 #endif
 
 #include "ShaderProgram.h"
 #include "Renderable2D.h"
+#include "Texture.h"
 
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -32,12 +33,16 @@ typedef struct Renderer {
     GLuint vaoID;
     GLuint posVBO;
     GLuint indexVBO;
-    
+    GLuint texVBO;
+
     Renderer();
 
     void init();
-    
+
     void fillQuad(Renderable2D& renderable, glm::vec4& colour);
+    void drawTexturedQuad(Renderable2D& renderable, Texture& texture);
+
+    glm::mat4 getMVPMatrix(Renderable2D& renderable);
 
 } Renderer;
 

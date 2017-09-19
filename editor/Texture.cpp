@@ -28,17 +28,19 @@ Texture::Texture(std::string path) {
     glGenTextures(1, &texID);
     glBindTexture(GL_TEXTURE_2D, texID);
 
-    int mode = GL_RGB;
+    int mode = GL_BGR;
 
     if (surface->format->BytesPerPixel == 4) {
-        printf("[INFO] Using GL_RGBA image loading for %s.\n", texPath.c_str());
-        mode = GL_RGBA;
+        printf("[INFO] Using GL_BGRA image loading for %s.\n", texPath.c_str());
+        mode = GL_BGRA;
     }
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, mode, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
-    glGenerateMipmap(GL_TEXTURE_2D);
 
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
+    
+    glGenerateMipmap(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+

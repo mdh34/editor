@@ -15,6 +15,8 @@
 #include "glm/gtx/transform.hpp"
 #include "glm/gtx/string_cast.hpp"
 
+#include "GLError.h"
+
 #include <ft2build.h>
 
 glm::mat4 projection;
@@ -28,7 +30,7 @@ int main(int argc, char** args) {
 
     projection = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f);
 
-    Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(10, 10));
+    Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(100, 100));
     
     Renderer renderer;
 
@@ -40,6 +42,9 @@ int main(int argc, char** args) {
     
     glm::vec4 col(1, 0, 1, 1);
     
+    Texture texture("/res/textures/banana.png");
+    Texture def("/res/textures/default.png");
+    
     renderer.init();
 
     float time = 0;
@@ -49,7 +54,11 @@ int main(int argc, char** args) {
         window.clear();
         window.poll();
 
-        renderer.fillQuad(sprite, col);
+//        renderer.fillQuad(sprite, col);
+        renderer.drawTexturedQuad(sprite, texture);
+        sprite.position.x = 900;
+        renderer.drawTexturedQuad(sprite, def);
+        sprite.position.x = 10;
 
         window.flip();
         SDL_Delay(5);
