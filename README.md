@@ -34,6 +34,18 @@ A barebones text editor written in C++ and OpenGL.
 12. Return to Visual Studio and it should now run :)
 
 ### macOS
+#### Xcode
+1. Create a new macOS Console Project
+2. `git clone <repo> <path_to_project>`
+3. Setup remote origin stuff (if you know, you know)
+4. `brew install freetype`
+5. Drag each framework from `dependencies/frameworks/` into the Xcode frameworks
+6. Add framework: `/usr/local/lib/libfreetype.6.dylib` and `GL.framework`
+7. Add `src/` to Xcode
+8. Add Header Paths APART FROM GL
+9. Edit scheme and set working directory to the root of the project
+10. Edit project settings and set build path to `bin/macos` and intermediates to `bin/macos/intermediates`
+11. Done :)
 
 ### Linux
 
