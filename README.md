@@ -8,3 +8,13 @@ A barebones text editor written in C++ and OpenGL.
 | MacOS    | In Development |
 | Windows  | Not Supported (yet) |
 | Linux    | Not Supported (yet) |
+
+## Build Instructions
+
+### Windows
+
+### macOS
+
+### Linux
+
+Coming soon :)

@@ -1,11 +1,13 @@
 
-#version 120
+#version 330
+layout (location=0) in vec3 position;
+layout (location=1) in vec2 texCoords;
 
-attribute vec4 position;
-varying vec2 texCoord;
+uniform mat4 mvpMatrix;
 
-void main(void) {
-    gl_Position = vec4(position.xy, 1.0, 1.0);
-    
-    texCoord = position.zw;
+out vec2 texCoord;
+
+void main() {
+    gl_Position = mvpMatrix * vec4(position, 1);
+    texCoord = texCoords;
 }
