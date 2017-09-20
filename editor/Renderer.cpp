@@ -21,9 +21,15 @@ texCoords{0, 1,
     TEXTURE_SHADER = ShaderProgram("/res/shaders/texture");
     TEXTURE_SHADER.createUniform("mvpMatrix");
     TEXTURE_SHADER.createUniform("texSampler");
+    
+    FONT_SHADER = ShaderProgram("/res/shaders/font");
+    FONT_SHADER.createUniform("texSampler");
+    FONT_SHADER.createUniform("colour");
+    FONT_SHADER.createUniform("mvpMatrix");
 }
 
-void Renderer::init() {
+int Renderer::init() {
+    // OpenGL
     glGenVertexArrays(1, &vaoID);
     glBindVertexArray(vaoID);
 
@@ -43,6 +49,8 @@ void Renderer::init() {
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    
+    return 0;
 }
 
 void Renderer::fillQuad(Renderable2D& renderable, glm::vec4& colour) {
@@ -64,27 +72,6 @@ void Renderer::fillQuad(Renderable2D& renderable, glm::vec4& colour) {
 }
 
 void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
-//    TEXTURE_SHADER.bind();
-//    TEXTURE_SHADER.setUniform("texSampler", texture.texID);
-//    TEXTURE_SHADER.setUniform("mvpMatrix", getMVPMatrix(renderable));
-//
-//    glBindTexture(GL_TEXTURE_2D, texture.texID);
-//    glBindVertexArray(vaoID);
-//    glEnableVertexAttribArray(0);
-//    glEnableVertexAttribArray(1);
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
-//
-//    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
-//
-//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-//    glDisableVertexAttribArray(1);
-//    glDisableVertexAttribArray(0);
-//    glBindVertexArray(0);
-//
-//    glBindTexture(GL_TEXTURE_2D, 0);
-//
-//    TEXTURE_SHADER.unbind();
-
     TEXTURE_SHADER.bind();
     TEXTURE_SHADER.setUniform("texSampler", 0);
     TEXTURE_SHADER.setUniform("mvpMatrix", getMVPMatrix(renderable));
@@ -100,22 +87,59 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
 
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
-
-    // glBindVertexArray(vaoID);
-    // glEnableVertexAttribArray(0);
-    // glEnableVertexAttribArray(1);
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
-    // glActiveTexture(GL_TEXTURE0);
-    // glBindTexture(GL_TEXTURE_2D, texture.texID);
-    //
-    // glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*) 0);
-    //
-    // glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-    // glDisableVertexAttribArray(1);
-    // glDisableVertexAttribArray(0);
-    // glBindVertexArray(0);
-
+    
     TEXTURE_SHADER.unbind();
+}
+
+void Renderer::drawString(NFont& font, std::string string, Renderable2D& position, glm::vec4& colour) {
+    float x = position.position.x;
+    float y = position.position.y;
+    float sx = position.size.x;
+    float sy = position.size.y;
+    
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
+    const char *p;
+    
+    for (p = string.c_str(); *p; p++) {
+        if (FT_Load_Char(font.face, *p, FT_LOAD_RENDER))
+            continue;
+        
+        FT_GlyphSlot g = font.face->glyph;
+        
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
+                     g->bitmap.width, g->bitmap.rows,
+                     0, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
+        
+        float x2 = x + g->bitmap_left * sx;
+        float y2 = -y - g->bitmap_top * sy;
+        float w = g->bitmap.width * sx;
+        float h = g->bitmap.rows * sy;
+        
+        GLfloat box[4][4] = {
+            {x2,     -y2    , 0, 0},
+            {x2 + w, -y2    , 1, 0},
+            {x2,     -y2 - h, 0, 1},
+            {x2 + w, -y2 - h, 1, 1},
+        };
+        
+        glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW);
+        
+        FONT_SHADER.bind();
+        FONT_SHADER.setUniform("texSampler", 0);
+        FONT_SHADER.setUniform("colour", colour);
+        FONT_SHADER.setUniform("mvpMatrix", getMVPMatrix(position));
+        
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        
+        FONT_SHADER.unbind();
+        
+        x += (g->advance.x/64) * sx;
+        y += (g->advance.y/64) * sy;
+    }
+    
+    glDisable(GL_BLEND);
 }
 
 glm::mat4 Renderer::getMVPMatrix(Renderable2D& renderable) {

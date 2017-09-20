@@ -24,11 +24,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "editor/Renderer.cpp"
-            timestampString = "527531173.418029"
+            timestampString = "527588934.525418"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "89"
-            endingLineNumber = "89"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "Renderer::drawTexturedQuad(Renderable2D&amp; renderable, Texture&amp; texture)"
             landmarkType = "7">
          </BreakpointContent>

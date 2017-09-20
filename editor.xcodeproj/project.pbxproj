@@ -20,6 +20,8 @@
 		4FDB8EFB1F6C815B00066144 /* dummy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8DFE1F6C815B00066144 /* dummy.cpp */; };
 		4FDB8EFC1F6C815B00066144 /* glm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FDB8E171F6C815B00066144 /* glm.cpp */; };
 		4FDB8EFF1F6C840400066144 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4FDB8EFD1F6C83E500066144 /* OpenGL.framework */; };
+		4FF9FC341F725C7A000200C8 /* Font.h in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9FC321F72518B000200C8 /* Font.h */; };
+		4FF9FC351F725C7A000200C8 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4FF9FC331F725781000200C8 /* Font.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -313,6 +315,8 @@
 		4FDB8EF91F6C815B00066144 /* vec4.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = vec4.hpp; sourceTree = "<group>"; };
 		4FDB8EFA1F6C815B00066144 /* vector_relational.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = vector_relational.hpp; sourceTree = "<group>"; };
 		4FDB8EFD1F6C83E500066144 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		4FF9FC321F72518B000200C8 /* Font.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
+		4FF9FC331F725781000200C8 /* Font.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +369,8 @@
 				4FDB8DE01F6C76BD00066144 /* Util.h */,
 				4FDB8DE31F6C76BD00066144 /* Window.cpp */,
 				4FDB8DCF1F6C746500066144 /* Window.h */,
+				4FF9FC321F72518B000200C8 /* Font.h */,
+				4FF9FC331F725781000200C8 /* Font.cpp */,
 			);
 			path = editor;
 			sourceTree = "<group>";
@@ -735,6 +741,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4FF9FC341F725C7A000200C8 /* Font.h in Sources */,
+				4FF9FC351F725C7A000200C8 /* Font.cpp in Sources */,
 				4FDB8EFC1F6C815B00066144 /* glm.cpp in Sources */,
 				4FDB8DED1F6C76BD00066144 /* Window.cpp in Sources */,
 				4FDB8DEB1F6C76BD00066144 /* Util.cpp in Sources */,

@@ -17,8 +17,7 @@
 
 #include "GLError.h"
 
-#include <ft2build.h>
-#include FT_FREETYPE_H
+#include "Font.h"
 
 glm::mat4 projection;
 int main(int argc, char** args) {
@@ -43,10 +42,13 @@ int main(int argc, char** args) {
     
     glm::vec4 col(1, 0, 1, 1);
     
-    Texture texture("/res/textures/banana.png");
-    Texture def("/res/textures/default.png");
+//    Texture texture("/res/textures/banana.png");
+//    Texture def("/res/textures/default.png");
     
     renderer.init();
+    
+    std::string path = "/res/fonts/Arial.ttf";
+    NFont font = NFont(path);
 
     float time = 0;
     while (window.isOpen) {
@@ -56,10 +58,7 @@ int main(int argc, char** args) {
         window.poll();
 
 //        renderer.fillQuad(sprite, col);
-        renderer.drawTexturedQuad(sprite, texture);
-        sprite.position.x = 900;
-        renderer.drawTexturedQuad(sprite, def);
-        sprite.position.x = 10;
+        renderer.drawString(font, "Hello world", sprite, col);
 
         window.flip();
         SDL_Delay(5);

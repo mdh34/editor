@@ -13,8 +13,12 @@
 #include "ShaderProgram.h"
 #include "Renderable2D.h"
 #include "Texture.h"
+#include "Font.h"
 
 #include "glm/gtc/matrix_transform.hpp"
+
+#include <ft2build.h>
+#include FT_FREETYPE_H
 
 typedef struct Renderer {
     glm::mat4 projectionMatrix;
@@ -25,6 +29,7 @@ typedef struct Renderer {
 
     ShaderProgram COLOUR_SHADER;
     ShaderProgram TEXTURE_SHADER;
+    ShaderProgram FONT_SHADER;
 
     GLfloat vertices[12];
     GLushort indices[6];
@@ -37,10 +42,11 @@ typedef struct Renderer {
 
     Renderer();
 
-    void init();
+    int init();
 
     void fillQuad(Renderable2D& renderable, glm::vec4& colour);
     void drawTexturedQuad(Renderable2D& renderable, Texture& texture);
+    void drawString(NFont& font, std::string string, Renderable2D& renderable, glm::vec4& colour);
 
     glm::mat4 getMVPMatrix(Renderable2D& renderable);
 
