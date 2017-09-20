@@ -61,6 +61,7 @@ void Window::poll() {
 }
 
 void Window::flip() {
+    glFlush();
     SDL_GL_SwapWindow(windowHandle);
 }
 

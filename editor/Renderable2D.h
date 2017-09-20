@@ -17,6 +17,11 @@ typedef struct Renderable2D {
         this->position = position;
         this->size = size;
     }
+    
+    Renderable2D(float x, float y, float width, float height) {
+        this->position = glm::vec3(x, y, 1);
+        this->size = glm::vec2(width, height);
+    }
 
 } Renderable2D;
 

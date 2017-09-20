@@ -50,8 +50,9 @@ int Renderer::init() {
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(GLushort), &indices[0], GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
+//    glBindBuffer(GL_ARRAY_BUFFER, 0);
+//    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+//    glBindVertexArray(0);
     
     return 0;
 }
@@ -63,15 +64,24 @@ void Renderer::fillQuad(Renderable2D& renderable, glm::vec4& colour) {
 
     glBindVertexArray(vaoID);
     glEnableVertexAttribArray(0);
+    glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, posVBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*) 0);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
     glBindVertexArray(0);
 
     COLOUR_SHADER.unbind();
+}
+
+void Renderer::fillQuad(float x, float y, float width, float height, glm::vec4& colour) {
+    Renderable2D temp(x, y, width, height);
+    fillQuad(temp, colour);
 }
 
 void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
@@ -85,80 +95,21 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
     glBindVertexArray(vaoID);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, posVBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*) 0);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDisableVertexAttribArray(0);
     glDisableVertexAttribArray(1);
+    
+    glBindVertexArray(0);
     
     TEXTURE_SHADER.unbind();
 }
 
-#if 0
-void Renderer::drawString(NFont& font, std::string string, Renderable2D& position, glm::vec4& colour) {
-    float x = position.position.x;
-    float y = position.position.y;
-    float sx = position.size.x;
-    float sy = position.size.y;
-    
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    
-    const char *p;
-    
-    for (p = string.c_str(); *p; p++) {
-        if (FT_Load_Char(font.face, *p, FT_LOAD_RENDER))
-            continue;
-        
-        FT_GlyphSlot g = font.face->glyph;
-        
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, font.tex);
-
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
-                     g->bitmap.width, g->bitmap.rows,
-                     0, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
-        
-        float x2 = x + g->bitmap_left * sx;
-        float y2 = -y - g->bitmap_top * sy;
-        float w = g->bitmap.width * sx;
-        float h = g->bitmap.rows * sy;
-        
-        /*GLfloat box[4][4] = {
-            {x2,     -y2    , 0, 0},
-            {x2 + w, -y2    , 1, 0},
-            {x2,     -y2 - h, 0, 1},
-            {x2 + w, -y2 - h, 1, 1},
-        };*/
-        
-        GLfloat box[4][4] = {
-            {-1.0f, 1.0f, 0, 0},
-            {-1.0f, -1.0f, 1, 0},
-            {1.0f, -1.0f, 0, 1},
-            {1.0f, 1.0f, 1, 1}
-        };
-        
-        glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW);
-        
-        FONT_SHADER.bind();
-        FONT_SHADER.setUniform("texSampler", 0);
-        FONT_SHADER.setUniform("colour", colour);
-        FONT_SHADER.setUniform("mvpMatrix", getMVPMatrix(position));
-        
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        
-        FONT_SHADER.unbind();
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glActiveTexture(GL_TEXTURE0);
-        
-        x += (g->advance.x/64) * sx;
-        y += (g->advance.y/64) * sy;
-    }
-    
-    glDisable(GL_BLEND);
-}
-#else
 void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4& colour) {
     const char *p;
 
@@ -184,9 +135,13 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         glBindVertexArray(vaoID);
         glEnableVertexAttribArray(0);
         glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, posVBO);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
         
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
 
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
 
@@ -196,9 +151,10 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         position.x += g->bitmap.width;
         
         glDeleteTextures(1, &texture.texID);
+        
+        glBindTexture(GL_TEXTURE_2D, texture.texID);
     }
 }
-#endif
 
 glm::mat4 Renderer::getMVPMatrix(Renderable2D& renderable) {
     float x = renderable.position.x + renderable.size.x / 2;
