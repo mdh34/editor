@@ -21,6 +21,7 @@
 #include "GLError.h"
 
 typedef struct Window {
+    Window() {};
     Window(int width, int height, std::string title);
 
     SDL_Window* windowHandle;

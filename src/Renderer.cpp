@@ -79,7 +79,7 @@ void Renderer::fillQuad(Renderable2D& renderable, glm::vec4& colour) {
     COLOUR_SHADER.unbind();
 }
 
-void Renderer::fillQuad(float x, float y, float width, float height, glm::vec4& colour) {
+void Renderer::fillQuad(float x, float y, float width, float height, glm::vec4 colour) {
     Renderable2D temp(x, y, width, height);
     fillQuad(temp, colour);
 }

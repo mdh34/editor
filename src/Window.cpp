@@ -19,7 +19,7 @@ Window::Window(int width, int height, std::string title) {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 
-    windowHandle = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN);
+    windowHandle = SDL_CreateWindow(title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL|SDL_WINDOW_SHOWN|SDL_WINDOW_RESIZABLE);
     if (windowHandle == NULL) {
         fprintf(stderr, "[ERROR] Failed at SDL_CreateWindow(...). SDL_Error: %s\n", SDL_GetError());
         exit(EXIT_FAILURE);
@@ -56,6 +56,10 @@ void Window::poll() {
         if (event.type == SDL_QUIT) {
             destroy();
             isOpen = false;
+        } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
+            this->width = event.window.data1;
+            this->height = event.window.data2;
+            glViewport(0, 0, width, height);
         }
     }
 }

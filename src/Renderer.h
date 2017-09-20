@@ -45,12 +45,13 @@ typedef struct Renderer {
     unsigned int width;
     unsigned int height;
 
+    Renderer() {};
     Renderer(unsigned int width, unsigned int height);
 
     int init();
 
     void fillQuad(Renderable2D& renderable, glm::vec4& colour);
-    void fillQuad(float x, float y, float width, float height, glm::vec4& colour);
+    void fillQuad(float x, float y, float width, float height, glm::vec4 colour);
     void drawTexturedQuad(Renderable2D& renderable, Texture& texture);
     void drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4& colour);
 

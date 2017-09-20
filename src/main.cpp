@@ -4,6 +4,8 @@
 // #include <ft2build.h>
 // #include <freetype/freetype.h>
 
+#include <chrono>
+
 #include "Window.h"
 #include "ShaderProgram.h"
 
@@ -19,58 +21,64 @@
 
 #include "Font.h"
 
-glm::mat4 projection;
-int main(int argc, char** args) {
+using namespace std::literals::chrono_literals;
+constexpr std::chrono::nanoseconds timestep(16ms);
 
+Window window;
+Renderer renderer;
+
+void init() {
     printf("Current working directory: %s\n", getCWD().c_str());
-
+    
     int width = 1000;
     int height = width / 16 * 9;
-
-    Window window(width, height, "Editor");
-    projection = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f, -100.0f, 100.0f);
-
-    Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(100, 100));
-    Renderable2D sprite1(glm::vec3(100.0f, 100.0f, 5.0f), glm::vec2(200, 200));
     
-    Renderer renderer(width, height);
-
-    renderer.projectionMatrix = projection;
+    window = Window(width, height, "Editor");
+    renderer = Renderer(window.width, window.height);
+    
+    renderer.projectionMatrix = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f, -100.0f, 100.0f);;
     renderer.translationMatrix = glm::mat4();
     renderer.modelMatrix = glm::mat4();
-
+    
     renderer.mvpMatrix = glm::mat4();
-    
-    glm::vec4 col(1, 0, 1, 1);
-    
-    Texture texture("/res/textures/banana.png");
-//    Texture def("/res/textures/default.png");
-    
     renderer.init();
     
-    std::string path = "/res/fonts/consolas.ttf";
-    NFont font = NFont(path, 50);
-    font.init();
+    
+}
 
-    glm::vec3 o(0, 0, 1);
+void update() {
+    window.poll();
+    renderer.projectionMatrix = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f, -100.0f, 100.0f);
+}
 
-    Renderable2D quad(glm::vec3(0, 0, 0), glm::vec2(width, font.height));
-    Renderable2D quad2(glm::vec3(320, 200, 1), glm::vec2(200, 150));
+void render() {
+    window.clear();
+    
+    renderer.fillQuad(10, 10, 100, 100, glm::vec4(1, 0, 1, 1));
+    
+    window.flip();
+}
 
-    float time = 0;
-    while (window.isOpen) {
-        time += 0.01f;
-        window.clear();
-        window.poll();
+glm::mat4 projection;
+int main(int argc, char** args) {
+    init();
 
-        renderer.drawTexturedQuad(sprite1, texture);
-//        renderer.fillQuad(sprite, col);
+    using clock = std::chrono::high_resolution_clock;
+    std::chrono::nanoseconds lag(0ns);
+    
+    auto startTime = clock::now();
+    
+    while(window.isOpen) {
+        auto deltaTime = clock::now() - startTime;
+        startTime = clock::now();
+        lag += std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime);
         
-        o.z = 1;
-        renderer.drawString(font, "Hello world g klnvsx431134/;'", o, col);
-
-        window.flip();
-        SDL_Delay(5);
+        while (lag >= timestep) {
+            lag -= timestep;
+            update();
+        }
+        
+        render();
     }
 
     return 0;
