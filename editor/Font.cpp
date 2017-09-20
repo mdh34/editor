@@ -14,13 +14,14 @@ int NFont::init() {
         return 1;
     }
     
+    std::string newPath = getCWD() + path;
     
-    if (FT_New_Face(lib, path.c_str(), 0, &face)) {
+    if (FT_New_Face(lib, newPath.c_str(), 0, &face)) {
         fprintf(stderr, "[ERROR] Failed to load face!");
         return 1;
     }
     
-//    FT_Set_Pixel_Sizes(face, 0, 48);
+    FT_Set_Pixel_Sizes(face, 0, 48);
 //    if(FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
 //        fprintf(stderr, "Could not load char\n");
 //        return 1;

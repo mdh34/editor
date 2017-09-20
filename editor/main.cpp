@@ -47,8 +47,9 @@ int main(int argc, char** args) {
     
     renderer.init();
     
-    std::string path = "/res/fonts/Arial.ttf";
+    std::string path = "/res/fonts/arial.ttf";
     NFont font = NFont(path);
+    font.init();
 
     float time = 0;
     while (window.isOpen) {

@@ -2,6 +2,8 @@
 #ifndef FONT_H
 #define FONT_H
 
+#include "Util.h"
+
 #include <string>
 
 #ifdef _WIN32

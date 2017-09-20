@@ -124,6 +124,13 @@ void Renderer::drawString(NFont& font, std::string string, Renderable2D& positio
             {x2 + w, -y2 - h, 1, 1},
         };
         
+//        GLfloat box[4][4] = {
+//            {-1.0f, 1.0f, 0, 0},
+//            {-1.0f, -1.0f, 1, 0},
+//            {1.0f, -1.0f, 0, 1},
+//            {1.0f, 1.0f, 1, 1}
+//        };
+        
         glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW);
         
         FONT_SHADER.bind();
