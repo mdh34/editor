@@ -2,3 +2,12 @@
 bin/
 
 *.xcodeproj/*
+
+.vs/
+.vs*/
+
+*.sln
+*.vcxproj
+*.filters
+*.user
+
