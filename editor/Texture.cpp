@@ -21,15 +21,21 @@ Texture::Texture(std::string path) {
     glGenTextures(1, &texID);
     glBindTexture(GL_TEXTURE_2D, texID);
 
+#ifdef _WIN32
     int mode = GL_RGB;
+#else
+    int mode = GL_BGR;
+#endif
 
     if (surface->format->BytesPerPixel == 4) {
-        printf("[INFO] Using GL_BGRA image loading for %s.\n", texPath.c_str());
+#ifdef _WIN32
         mode = GL_RGBA;
+#else
+        mode = GL_BGRA;
+#endif
     }
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, surface->w, surface->h, 0, mode, GL_UNSIGNED_BYTE, surface->pixels);
     

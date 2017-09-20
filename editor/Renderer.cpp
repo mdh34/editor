@@ -111,23 +111,35 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
 }
 
 void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4& colour) {
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     const char *p;
 
     float x = position.x;
     float y = position.y;
 
+    FT_GlyphSlot g = nullptr;
+    unsigned int i = 0;
     for (p = string.c_str(); *p; p++) {
+        if (i > 0) {
+            if (*p == ' ') {
+                position.x += g->bitmap.width + 2;
+                continue;
+            }
+        }
+        
         if (FT_Load_Char(font.face, *p, FT_LOAD_RENDER))
             continue;
+        
+        g = font.face->glyph;
 
-        FT_GlyphSlot g = font.face->glyph;
-
-        position.y = y + (font.height - g->bitmap.rows);
+        position.y = y + (font.height - g->bitmap.rows + (g->bitmap.rows - g->bitmap_top));
         
         Texture texture(g);
-        TEXTURE_SHADER.bind();
-        TEXTURE_SHADER.setUniform("texSampler", 0);
-        TEXTURE_SHADER.setUniform("mvpMatrix", getGlyphMVPMatrix(position, g));
+        FONT_SHADER.bind();
+        FONT_SHADER.setUniform("texSampler", 0);
+        FONT_SHADER.setUniform("mvpMatrix", getGlyphMVPMatrix(position, g));
+        FONT_SHADER.setUniform("colour", colour);
         
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture.texID);
@@ -142,18 +154,22 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(0);
 
-        TEXTURE_SHADER.unbind();
+        FONT_SHADER.unbind();
 
         // position.x += font.face->max_advance_width / font.height;
-        position.x += g->bitmap.width;
+        position.x += g->bitmap.width + 2;
         
         glDeleteTextures(1, &texture.texID);
         
-        glBindTexture(GL_TEXTURE_2D, texture.texID);
+        glBindTexture(GL_TEXTURE_2D, 0);
+        
+        i++;
     }
+    
+    glDisable(GL_BLEND);
 }
 
 glm::mat4 Renderer::getMVPMatrix(Renderable2D& renderable) {

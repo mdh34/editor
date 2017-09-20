@@ -48,7 +48,7 @@ int main(int argc, char** args) {
     
     renderer.init();
     
-    std::string path = "/res/fonts/arial.ttf";
+    std::string path = "/res/fonts/consolas.ttf";
     NFont font = NFont(path, 50);
     font.init();
 
@@ -67,7 +67,7 @@ int main(int argc, char** args) {
 //        renderer.fillQuad(sprite, col);
         
         o.z = 1;
-        renderer.drawString(font, "Hello world", o, col);
+        renderer.drawString(font, "Hello world g klnvsx431134/;'", o, col);
 
         window.flip();
         SDL_Delay(5);
