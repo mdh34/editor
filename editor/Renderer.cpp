@@ -2,7 +2,7 @@
 
 #include "GLError.h"
 
-Renderer::Renderer()
+Renderer::Renderer(unsigned int width, unsigned int height)
 : vertices{-1.0f, 1.0f, 0,
     -1.0f, -1.0f, 0,
     1.0f, -1.0f, 0,
@@ -13,6 +13,9 @@ texCoords{0, 1,
     1, 0,
     1, 1}
 {
+
+    this->width = width;
+    this->height = height;
 
     COLOUR_SHADER = ShaderProgram("/res/shaders/colour");
     COLOUR_SHADER.createUniform("colour");
@@ -91,6 +94,7 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
     TEXTURE_SHADER.unbind();
 }
 
+#if 0
 void Renderer::drawString(NFont& font, std::string string, Renderable2D& position, glm::vec4& colour) {
     float x = position.position.x;
     float y = position.position.y;
@@ -108,6 +112,9 @@ void Renderer::drawString(NFont& font, std::string string, Renderable2D& positio
         
         FT_GlyphSlot g = font.face->glyph;
         
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, font.tex);
+
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RED,
                      g->bitmap.width, g->bitmap.rows,
                      0, GL_RED, GL_UNSIGNED_BYTE, g->bitmap.buffer);
@@ -117,19 +124,19 @@ void Renderer::drawString(NFont& font, std::string string, Renderable2D& positio
         float w = g->bitmap.width * sx;
         float h = g->bitmap.rows * sy;
         
-        GLfloat box[4][4] = {
+        /*GLfloat box[4][4] = {
             {x2,     -y2    , 0, 0},
             {x2 + w, -y2    , 1, 0},
             {x2,     -y2 - h, 0, 1},
             {x2 + w, -y2 - h, 1, 1},
-        };
+        };*/
         
-//        GLfloat box[4][4] = {
-//            {-1.0f, 1.0f, 0, 0},
-//            {-1.0f, -1.0f, 1, 0},
-//            {1.0f, -1.0f, 0, 1},
-//            {1.0f, 1.0f, 1, 1}
-//        };
+        GLfloat box[4][4] = {
+            {-1.0f, 1.0f, 0, 0},
+            {-1.0f, -1.0f, 1, 0},
+            {1.0f, -1.0f, 0, 1},
+            {1.0f, 1.0f, 1, 1}
+        };
         
         glBufferData(GL_ARRAY_BUFFER, sizeof(box), box, GL_DYNAMIC_DRAW);
         
@@ -141,6 +148,9 @@ void Renderer::drawString(NFont& font, std::string string, Renderable2D& positio
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         
         FONT_SHADER.unbind();
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glActiveTexture(GL_TEXTURE0);
         
         x += (g->advance.x/64) * sx;
         y += (g->advance.y/64) * sy;
@@ -148,6 +158,47 @@ void Renderer::drawString(NFont& font, std::string string, Renderable2D& positio
     
     glDisable(GL_BLEND);
 }
+#else
+void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4& colour) {
+    const char *p;
+
+    float x = position.x;
+    float y = position.y;
+
+    for (p = string.c_str(); *p; p++) {
+        if (FT_Load_Char(font.face, *p, FT_LOAD_RENDER))
+            continue;
+
+        FT_GlyphSlot g = font.face->glyph;
+
+        position.y = y + (font.height - g->bitmap.rows);
+        
+        Texture texture(g);
+        TEXTURE_SHADER.bind();
+        TEXTURE_SHADER.setUniform("texSampler", 0);
+        TEXTURE_SHADER.setUniform("mvpMatrix", getGlyphMVPMatrix(position, g));
+        
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, texture.texID);
+
+        glBindVertexArray(vaoID);
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+        
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
+
+        glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+
+        TEXTURE_SHADER.unbind();
+
+        // position.x += font.face->max_advance_width / font.height;
+        position.x += g->bitmap.width;
+        
+        glDeleteTextures(1, &texture.texID);
+    }
+}
+#endif
 
 glm::mat4 Renderer::getMVPMatrix(Renderable2D& renderable) {
     float x = renderable.position.x + renderable.size.x / 2;
@@ -158,4 +209,22 @@ glm::mat4 Renderer::getMVPMatrix(Renderable2D& renderable) {
     mvpMatrix = projectionMatrix * (translationMatrix * modelMatrix);
 
     return mvpMatrix;
+}
+
+glm::mat4 Renderer::getGlyphMVPMatrix(glm::vec3& position, FT_GlyphSlot& glyph) {
+    float x = position.x + glyph->bitmap.width / 2;
+    float y = position.y + glyph->bitmap.rows / 2;
+
+    translationMatrix = glm::translate(glm::mat4(), glm::vec3(x, y, position.z));
+    modelMatrix = glm::scale(glm::mat4(), glm::vec3(glyph->bitmap.width / 2, glyph->bitmap.rows / 2, 1.0f));
+    mvpMatrix = projectionMatrix * (translationMatrix * modelMatrix);
+
+ 
+    return mvpMatrix;
+}
+
+glm::vec2 Renderer::toNDC(glm::vec2 coords) {
+    // return glm::vec2(coords.x / ((float) width / 2) - 1, coords.y / ((float) height / 2));
+    glm::vec4 result = projectionMatrix * glm::vec4(coords.x, coords.y, 1, 1);
+    return glm::vec2(result.x, result.y);
 }

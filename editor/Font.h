@@ -26,8 +26,10 @@ typedef struct NFont {
     GLuint tex;
     GLuint vbo;
     
+    unsigned int height;
+
     NFont();
-    NFont(std::string& path);
+    NFont(std::string& path, unsigned int height);
     
     int init();
 } NFont;

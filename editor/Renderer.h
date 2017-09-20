@@ -20,6 +20,8 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include <freetype/ftglyph.h>
+
 typedef struct Renderer {
     glm::mat4 projectionMatrix;
     glm::mat4 translationMatrix;
@@ -40,15 +42,21 @@ typedef struct Renderer {
     GLuint indexVBO;
     GLuint texVBO;
 
-    Renderer();
+    unsigned int width;
+    unsigned int height;
+
+    Renderer(unsigned int width, unsigned int height);
 
     int init();
 
     void fillQuad(Renderable2D& renderable, glm::vec4& colour);
     void drawTexturedQuad(Renderable2D& renderable, Texture& texture);
-    void drawString(NFont& font, std::string string, Renderable2D& renderable, glm::vec4& colour);
+    void drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4& colour);
 
     glm::mat4 getMVPMatrix(Renderable2D& renderable);
+    glm::mat4 getGlyphMVPMatrix(glm::vec3& position, FT_GlyphSlot& glyph);
+
+    glm::vec2 toNDC(glm::vec2 coords);
 
 } Renderer;
 

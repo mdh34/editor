@@ -3,8 +3,9 @@
 
 NFont::NFont() {}
 
-NFont::NFont(std::string& path) {
+NFont::NFont(std::string& path, unsigned int height) {
     this->path = path;
+    this->height = height;
 }
 
 int NFont::init() {
@@ -21,13 +22,10 @@ int NFont::init() {
         return 1;
     }
     
-    FT_Set_Pixel_Sizes(face, 0, 48);
-//    if(FT_Load_Char(face, 'X', FT_LOAD_RENDER)) {
-//        fprintf(stderr, "Could not load char\n");
-//        return 1;
-//    }
-    
-    glActiveTexture(GL_TEXTURE0);
+    FT_Set_Pixel_Sizes(face, 0, height);
+
+    /*glActiveTexture(GL_TEXTURE1);
+
     glGenTextures(1, &tex);
     glBindTexture(GL_TEXTURE_2D, tex);
     
@@ -43,5 +41,7 @@ int NFont::init() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
     glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
     
+    glBindTexture(GL_TEXTURE_2D, 0);*/
+
     return 0;
 }

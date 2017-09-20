@@ -15,8 +15,12 @@
 
 #include "Util.h"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
 typedef struct Texture {
     Texture(std::string path);
+    Texture(FT_GlyphSlot& bitmap);
     
     int width;
     int height;

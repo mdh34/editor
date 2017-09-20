@@ -22,17 +22,18 @@
 glm::mat4 projection;
 int main(int argc, char** args) {
 
-	printf("Current working directory: %s\n", getCWD().c_str());
+    printf("Current working directory: %s\n", getCWD().c_str());
 
-		int width = 1000;
-		int height = width / 16 * 9;
+    int width = 1000;
+    int height = width / 16 * 9;
+
     Window window(width, height, "Editor");
-
     projection = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f);
 
     Renderable2D sprite(glm::vec3(10.0f, 10.0f, 1.0f), glm::vec2(100, 100));
+    Renderable2D sprite1(glm::vec3(100, 100, 1), glm::vec2(200, 200));
     
-    Renderer renderer;
+    Renderer renderer(width, height);
 
     renderer.projectionMatrix = projection;
     renderer.translationMatrix = glm::mat4();
@@ -42,14 +43,18 @@ int main(int argc, char** args) {
     
     glm::vec4 col(1, 0, 1, 1);
     
-//    Texture texture("/res/textures/banana.png");
+    Texture texture("/res/textures/banana.png");
 //    Texture def("/res/textures/default.png");
     
     renderer.init();
     
-    std::string path = "/res/fonts/arial.ttf";
-    NFont font = NFont(path);
+    std::string path = "/res/fonts/consola.ttf";
+    NFont font = NFont(path, 10);
     font.init();
+
+    glm::vec3 o(0, 0, 1);
+
+    Renderable2D quad(glm::vec3(0, 0, 0), glm::vec2(width, font.height));
 
     float time = 0;
     while (window.isOpen) {
@@ -59,7 +64,10 @@ int main(int argc, char** args) {
         window.poll();
 
 //        renderer.fillQuad(sprite, col);
-        renderer.drawString(font, "Hello world", sprite, col);
+        renderer.drawTexturedQuad(sprite1, texture);
+        renderer.fillQuad(quad, glm::vec4(1, 0, 1, 1));
+        renderer.drawString(font, "Hello world", o, col);
+
 
         window.flip();
         SDL_Delay(5);
