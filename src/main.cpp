@@ -65,7 +65,9 @@ void update() {
             glViewport(0, 0, window.width, window.height);
         }
         else if (event.type == SDL_KEYDOWN) {
-
+            if (event.key.keysym.sym == SDLK_BACKSPACE) {
+                editor.pop_back();
+            }
         }
         else if (event.type == SDL_TEXTINPUT) {
             editor += event.text.text;
