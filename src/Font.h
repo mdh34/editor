@@ -27,6 +27,7 @@ typedef struct NFont {
     GLuint vbo;
     
     unsigned int height;
+    unsigned int advance;
 
     NFont();
     NFont(std::string& path, unsigned int height);

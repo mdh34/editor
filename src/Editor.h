@@ -19,6 +19,9 @@ typedef struct Editor {
     
     std::vector<Buffer> buffers;
     
+    int time = 0;
+    bool show = true;
+    
     void openFile(std::string path);
     void saveFile(std::string path);
     

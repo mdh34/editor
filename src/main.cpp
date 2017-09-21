@@ -84,6 +84,8 @@ int main(int argc, char** args) {
         }
         
         render();
+        
+        SDL_Delay(5);
     }
 
     window.destroy();
