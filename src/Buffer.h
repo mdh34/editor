@@ -5,11 +5,7 @@
 #include <string>
 
 typedef struct Buffer {
-    Buffer();
-
-    std::string getBetween(int line1, int line2) {
-        
-    };
+    Buffer() {};
 
     std::string contents;
 } Buffer;

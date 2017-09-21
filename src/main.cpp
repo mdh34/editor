@@ -20,15 +20,15 @@
 #include "GLError.h"
 
 #include "Font.h"
+#include "Editor.h"
 
 using namespace std::literals::chrono_literals;
 constexpr std::chrono::nanoseconds timestep(16ms);
 
 Window window;
 Renderer renderer;
-NFont font;
 
-std::string editor = "";
+Editor editor(window, renderer);
 
 void init() {
     printf("Current working directory: %s\n", getCWD().c_str());
@@ -46,42 +46,21 @@ void init() {
     renderer.mvpMatrix = glm::mat4();
     renderer.init();
     
-    std::string path = "/res/fonts/consolas.ttf";
-    font = NFont(path, 24);
-    font.init();
+    editor.window = window;
+    editor.renderer = renderer;
 }
 
 SDL_Event event;
 void update() {
 //     window.poll();
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            window.destroy();
-            window.isOpen = false;
-        }
-        else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
-            window.width = event.window.data1;
-            window.height = event.window.data2;
-            glViewport(0, 0, window.width, window.height);
-        }
-        else if (event.type == SDL_KEYDOWN) {
-            if (event.key.keysym.sym == SDLK_BACKSPACE) {
-                editor.pop_back();
-            }
-        }
-        else if (event.type == SDL_TEXTINPUT) {
-            editor += event.text.text;
-            std::cout << editor << std::endl;
-        }
-    }
-
+    editor.update();
     renderer.projectionMatrix = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f, -100.0f, 100.0f);
 }
 
 
 void render() {
     window.clear();
-    renderer.drawString(font, editor, glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 1));
+    editor.render();
     window.flip();
 }
 
