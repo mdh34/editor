@@ -49,23 +49,12 @@ Window::Window(int width, int height, std::string title) {
     isOpen = true;
 
     SDL_GL_SetSwapInterval(1);
+
+    SDL_StartTextInput();
 }
 
-void Window::poll(std::function<void(SDL_Event)> keyCallback) {
-    SDL_StartTextInput();
-    while (SDL_PollEvent(&event)) {
-        if (event.type == SDL_QUIT) {
-            destroy();
-            isOpen = false;
-        } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
-            this->width = event.window.data1;
-            this->height = event.window.data2;
-            glViewport(0, 0, width, height);
-        } else if (event.type == SDL_KEYDOWN) {
-            keyCallback(event);
-        }
-    }
-    SDL_StopTextInput();
+void Window::poll() {
+
 }
 
 void Window::flip() {
@@ -82,5 +71,8 @@ void Window::clear() {
 void Window::destroy() {
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(windowHandle);
+
+    SDL_StartTextInput();
+
     SDL_Quit();
 }

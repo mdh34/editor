@@ -23,6 +23,7 @@ int NFont::init() {
     }
     
     FT_Set_Pixel_Sizes(face, 0, height);
+    // FT_Set_Char_Size(face, )
 
     /*glActiveTexture(GL_TEXTURE1);
 

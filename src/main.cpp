@@ -24,8 +24,6 @@
 using namespace std::literals::chrono_literals;
 constexpr std::chrono::nanoseconds timestep(16ms);
 
-void onKeyPressed(SDL_Event event);
-
 Window window;
 Renderer renderer;
 NFont font;
@@ -49,27 +47,39 @@ void init() {
     renderer.init();
     
     std::string path = "/res/fonts/consolas.ttf";
-    font = NFont(path, 30);
+    font = NFont(path, 24);
     font.init();
 }
 
-void onKeyPressed(SDL_Event event) {
-    editor += event.edit.text[8];
-    printf("%s\n", editor.c_str());
-}
-
+SDL_Event event;
 void update() {
-    window.poll(onKeyPressed);
+//     window.poll();
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            window.destroy();
+            window.isOpen = false;
+        }
+        else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
+            window.width = event.window.data1;
+            window.height = event.window.data2;
+            glViewport(0, 0, window.width, window.height);
+        }
+        else if (event.type == SDL_KEYDOWN) {
+
+        }
+        else if (event.type == SDL_TEXTINPUT) {
+            editor += event.text.text;
+            std::cout << editor << std::endl;
+        }
+    }
+
     renderer.projectionMatrix = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f, -100.0f, 100.0f);
 }
 
 
 void render() {
     window.clear();
-    
-    renderer.fillQuad(10, 10, 100, 100, glm::vec4(1, 0, 1, 1));
     renderer.drawString(font, editor, glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 1));
-    
     window.flip();
 }
 
@@ -94,6 +104,8 @@ int main(int argc, char** args) {
         
         render();
     }
+
+    window.destroy();
 
     return 0;
 }

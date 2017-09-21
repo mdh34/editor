@@ -110,6 +110,14 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
     TEXTURE_SHADER.unbind();
 }
 
+void Renderer::drawQuad(float x, float y, float width, float height, glm::vec4 colour) {
+    fillQuad(x, y, width, 1, colour);
+    fillQuad(x, y + height, width, 1, colour);
+    fillQuad(x + width, y, 1, height, colour);
+    fillQuad(x, y, 1, height, colour);
+}
+
+// TODO: Fix text alignment. ATM it is hacked together... Check out g->advance.y etc.
 void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4 colour) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -133,7 +141,7 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         
         g = font.face->glyph;
 
-        position.y = y + (font.height - g->bitmap.rows + (g->bitmap.rows - g->bitmap_top));
+        position.y = y + (font.height - g->bitmap.rows + (g->bitmap.rows - g->bitmap_top)) - font.height / 4;
         
         Texture texture(g);
         FONT_SHADER.bind();
@@ -160,12 +168,14 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         FONT_SHADER.unbind();
 
         // position.x += font.face->max_advance_width / font.height;
-        position.x += g->bitmap.width + 2;
+        // position.x += g->bitmap.width + 2;
         
         glDeleteTextures(1, &texture.texID);
         
         glBindTexture(GL_TEXTURE_2D, 0);
-        
+
+        position.x += (g->advance.x / 64);
+
         i++;
     }
     
