@@ -24,8 +24,13 @@
 using namespace std::literals::chrono_literals;
 constexpr std::chrono::nanoseconds timestep(16ms);
 
+void onKeyPressed(SDL_Event event);
+
 Window window;
 Renderer renderer;
+NFont font;
+
+std::string editor = "";
 
 void init() {
     printf("Current working directory: %s\n", getCWD().c_str());
@@ -43,18 +48,27 @@ void init() {
     renderer.mvpMatrix = glm::mat4();
     renderer.init();
     
-    
+    std::string path = "/res/fonts/consolas.ttf";
+    font = NFont(path, 30);
+    font.init();
+}
+
+void onKeyPressed(SDL_Event event) {
+    editor += event.edit.text[8];
+    printf("%s\n", editor.c_str());
 }
 
 void update() {
-    window.poll();
+    window.poll(onKeyPressed);
     renderer.projectionMatrix = glm::ortho(0.0f, (float) (window.width), (float) (window.height), 0.0f, -100.0f, 100.0f);
 }
+
 
 void render() {
     window.clear();
     
     renderer.fillQuad(10, 10, 100, 100, glm::vec4(1, 0, 1, 1));
+    renderer.drawString(font, editor, glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 1));
     
     window.flip();
 }

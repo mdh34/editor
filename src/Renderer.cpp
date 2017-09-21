@@ -110,7 +110,7 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
     TEXTURE_SHADER.unbind();
 }
 
-void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4& colour) {
+void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4 colour) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     const char *p;

@@ -27,7 +27,7 @@ typedef struct Window {
     SDL_Window* windowHandle;
     SDL_GLContext glContext;
     SDL_Event event;
-
+    
     bool isOpen;
 
     int width;
@@ -35,7 +35,7 @@ typedef struct Window {
     std::string title;
 
     void clear();
-    void poll();
+    void poll(std::function<void(SDL_Event)>);
     void flip();
     void destroy();
 } Window;
