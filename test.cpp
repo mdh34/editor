@@ -23,6 +23,7 @@
 #include "Editor.h"
 
 using namespace std::literals::chrono_literals;
+constexpr std::chrono::nanoseconds timestep(16ms);
 
 Window window;
 Renderer renderer;
@@ -67,26 +68,26 @@ glm::mat4 projection;
 int main(int argc, char** args) {
     init();
 
-    double start = 0;
-    double end = SDL_GetTicks() / 1000.0;
-    double deltaTime = 0.0;
-    double miliSecs = (1000.0 / 60.0) / 1000.0;
+    using clock = std::chrono::high_resolution_clock;
+    std::chrono::nanoseconds lag(0ns);
     
-    while (window.isOpen) {
-        start = SDL_GetTicks() / 1000.0;
-        deltaTime += (double) (start - end) / miliSecs;
-        end = start;
-        while (deltaTime >= 1.0) {
+    auto startTime = clock::now();
+    
+    while(window.isOpen) {
+        auto deltaTime = clock::now() - startTime;
+        startTime = clock::now();
+        lag += std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime);
+        
+        while (lag >= timestep) {
+            lag -= timestep;
             update();
-            
-            deltaTime -= 1.0;
         }
         
         render();
         
-        SDL_Delay(1);
+        SDL_Delay(5);
     }
-    
+
     window.destroy();
 
     return 0;

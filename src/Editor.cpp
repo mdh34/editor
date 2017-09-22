@@ -5,11 +5,13 @@ Editor::Editor(Window& window, Renderer& renderer)
 : window(window), renderer(renderer) {
     
     std::string path = "/res/fonts/consolas.ttf";
-    font = NFont(path, 24);
+    font = NFont(path, 32);
     font.init();
     
     buffers.push_back(Buffer());
     activeBuffer = 0;
+    
+//    openFile("test.cpp");
 }
 
 void Editor::update() {
@@ -40,6 +42,8 @@ void Editor::update() {
         }
     }
     
+    
+    
     time += 1;
 }
 
@@ -53,7 +57,7 @@ void Editor::render() {
         }
     }
     
-    if (time % 40 == 0) {
+    if (time % 60 == 0) {
         show = !show;
     }
     if (show) {
@@ -65,7 +69,11 @@ void Editor::render() {
 }
 
 void Editor::openFile(std::string filePath) {
-    
+    Buffer buffer;
+    std::string contents = loadFile(filePath);
+    buffer.contents = contents;
+    buffers.push_back(buffer);
+    activeBuffer = (unsigned int) buffers.size() - 1;
 }
 
 void Editor::saveFile(std::string filePath) {

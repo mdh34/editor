@@ -4,6 +4,8 @@
 
 #include "glm/glm.hpp"
 
+#include "Util.h"
+
 #include <string>
 
 typedef struct Buffer {

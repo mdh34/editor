@@ -14,10 +14,10 @@ typedef struct Editor {
 
     Window& window;
     Renderer& renderer;
-    
     NFont font;
     
     std::vector<Buffer> buffers;
+    glm::vec2 visibleBounds;
     
     int time = 0;
     bool show = true;
