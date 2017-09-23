@@ -17,5 +17,7 @@
 std::string getCWD();
 std::string loadFile(std::string path);
 std::vector<std::string> stringSplit(std::string& input, std::string& regex);
+std::vector<std::string> stringSplitByLine(std::string& input);
+
 
 #endif

@@ -44,3 +44,8 @@ std::vector<std::string> stringSplit(std::string& input, std::string& regex) {
         last;
     return {first, last};
 }
+
+std::vector<std::string> stringSplitByLine(std::string& input) {
+    std::string reg = "\n";
+    return stringSplit(input, reg);
+}

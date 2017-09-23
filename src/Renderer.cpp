@@ -131,7 +131,11 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
     for (p = string.c_str(); *p; p++) {
         if (i > 0) {
             if (*p == ' ') {
-                position.x += g->bitmap.width + 2;
+                // position.x += g->bitmap.width + 2;
+                position.x += font.advance;
+                continue;
+            }
+            else if (*p == '\n') {
                 continue;
             }
         }

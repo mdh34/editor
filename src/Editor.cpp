@@ -5,7 +5,7 @@ Editor::Editor(Window& window, Renderer& renderer)
 : window(window), renderer(renderer) {
     
     std::string path = "/res/fonts/consolas.ttf";
-    font = NFont(path, 32);
+    font = NFont(path, 18);
     font.init();
     
     buffers.push_back(Buffer());
@@ -28,42 +28,47 @@ void Editor::update() {
         }
         else if (event.type == SDL_KEYDOWN) {
             if (event.key.keysym.sym == SDLK_BACKSPACE) {
-                buffers[activeBuffer].contents.pop_back();
-                buffers[activeBuffer].cursor.x--;
+                buffers[activeBuffer].delChar(false);
             } else if (event.key.keysym.sym == SDLK_RETURN) {
-                buffers[activeBuffer].contents += '\n';
-                buffers[activeBuffer].cursor.x = 0;
-                buffers[activeBuffer].cursor.y++;
+                buffers[activeBuffer].newLine();
+            }
+            else if (event.key.keysym.sym == SDLK_LEFT) {
+                buffers[activeBuffer].moveCursorBy(-1, 0);
+            }
+            else if (event.key.keysym.sym == SDLK_RIGHT) {
+                buffers[activeBuffer].moveCursorBy(1, 0);
+            }
+            else if (event.key.keysym.sym == SDLK_UP) {
+                buffers[activeBuffer].moveCursorBy(0, -1);
+            }
+            else if (event.key.keysym.sym == SDLK_UP) {
+                buffers[activeBuffer].moveCursorBy(0, 1);
             }
         }
         else if (event.type == SDL_TEXTINPUT) {
-            buffers[activeBuffer].contents += event.text.text;
-            buffers[activeBuffer].cursor.x++;
+            buffers[activeBuffer].insert(event.text.text);
         }
     }
-    
-    
-    
+
     time += 1;
 }
 
 void Editor::render() {
     for(unsigned int i = 0; i < buffers.size(); i++) {
 //        renderer.drawString(font, buffers[i].contents, glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 1));
-        std::string splitBy = "\n";
-        std::vector<std::string> lines = stringSplit(buffers[i].contents, splitBy);
-        for (unsigned int j = 0; j < lines.size(); j++) {
-            renderer.drawString(font, lines[j], glm::vec3(0, j * font.height, 1), glm::vec4(1, 1, 1, 1));
+        for (unsigned int j = 0; j < buffers[i].lines.size(); j++) {
+            renderer.drawString(font, buffers[i].lines[j], glm::vec3(0, j * font.height, 1), glm::vec4(1, 1, 1, 1));
         }
     }
     
-    if (time % 60 == 0) {
+    if (time % 30 == 0) {
         show = !show;
     }
     if (show) {
         renderer.fillQuad((float) buffers[activeBuffer].cursor.x * font.advance,
                           (float) buffers[activeBuffer].cursor.y * font.height,
                           2, font.height, glm::vec4(1, 1, 1, 1));
+        
     }
     
 }
@@ -71,7 +76,8 @@ void Editor::render() {
 void Editor::openFile(std::string filePath) {
     Buffer buffer;
     std::string contents = loadFile(filePath);
-    buffer.contents = contents;
+    std::vector<std::string> lines = stringSplitByLine(contents);
+    buffer.lines = lines;
     buffers.push_back(buffer);
     activeBuffer = (unsigned int) buffers.size() - 1;
 }
