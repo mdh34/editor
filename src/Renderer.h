@@ -14,6 +14,7 @@
 #include "Renderable2D.h"
 #include "Texture.h"
 #include "Font.h"
+#include "FontAtlas.h"
 
 #include "glm/gtc/matrix_transform.hpp"
 
@@ -45,6 +46,9 @@ typedef struct Renderer {
     unsigned int width;
     unsigned int height;
 
+    NFont font;
+    FontAtlas fontAtlas;
+
     Renderer() {};
     Renderer(unsigned int width, unsigned int height);
 
@@ -54,7 +58,7 @@ typedef struct Renderer {
     void fillQuad(float x, float y, float width, float height, glm::vec4 colour);
     void drawQuad(float x, float y, float width, float height, glm::vec4 colour);
     void drawTexturedQuad(Renderable2D& renderable, Texture& texture);
-    void drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4 colour);
+    void drawString(std::string string, glm::vec3 position, glm::vec4 colour);
 
     glm::mat4 getMVPMatrix(Renderable2D& renderable);
     glm::mat4 getGlyphMVPMatrix(glm::vec3& position, FT_GlyphSlot& glyph);

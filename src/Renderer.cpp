@@ -54,6 +54,10 @@ int Renderer::init() {
 //    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 //    glBindVertexArray(0);
     
+    // Font
+    font = NFont("/res/fonts/conoslas.ttf", 32);
+    fontAtlas = FontAtlas(256, 256, font);
+
     return 0;
 }
 
@@ -89,14 +93,15 @@ void Renderer::drawTexturedQuad(Renderable2D& renderable, Texture& texture) {
     TEXTURE_SHADER.setUniform("texSampler", 0);
     TEXTURE_SHADER.setUniform("mvpMatrix", getMVPMatrix(renderable));
 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture.texID);
 
     glBindVertexArray(vaoID);
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
     glBindBuffer(GL_ARRAY_BUFFER, posVBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture.texID);
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*) 0);
 
@@ -118,9 +123,10 @@ void Renderer::drawQuad(float x, float y, float width, float height, glm::vec4 c
 }
 
 // TODO: Fix text alignment. ATM it is hacked together... Check out g->advance.y etc.
-void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, glm::vec4 colour) {
+void Renderer::drawString(std::string string, glm::vec3 position, glm::vec4 colour) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     const char *p;
 
     float x = position.x;
@@ -139,11 +145,18 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
                 continue;
             }
         }
+
+        FontInfo charInfo = fontAtlas.getChar(*p);
+        if (charInfo) {
+            g = charInfo.glyph;
+        }
+        else {
+            printf("Could not find char declaration for %s\n", *p);
+            if (FT_Load_Char(font.face, *p, FT_LOAD_RENDER))
+                continue;
+            g = font.face->glyph;
+        }
         
-        if (FT_Load_Char(font.face, *p, FT_LOAD_RENDER))
-            continue;
-        
-        g = font.face->glyph;
 
         position.y = y + (font.height - g->bitmap.rows + (g->bitmap.rows - g->bitmap_top)) - font.height / 4;
         
@@ -152,7 +165,8 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         FONT_SHADER.setUniform("texSampler", 0);
         FONT_SHADER.setUniform("mvpMatrix", getGlyphMVPMatrix(position, g));
         FONT_SHADER.setUniform("colour", colour);
-        
+        FONT_SHADER.setUniform("texCoords", 
+        // Need to calculate new tex coords and arrays for each bitmap from the texture atlas :( 
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, texture.texID);
 
@@ -164,10 +178,13 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_SHORT, (void*)0);
 
+        glBindTexture(GL_TEXTURE_2D, 0);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glDisableVertexAttribArray(1);
         glDisableVertexAttribArray(0);
+        glDisableVertexAttribArray(1);
+
+        glBindVertexArray(0);
 
         FONT_SHADER.unbind();
 
@@ -176,8 +193,6 @@ void Renderer::drawString(NFont& font, std::string string, glm::vec3 position, g
         
         glDeleteTextures(1, &texture.texID);
         
-        glBindTexture(GL_TEXTURE_2D, 0);
-
         position.x += (g->advance.x / 64);
 
         i++;

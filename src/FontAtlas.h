@@ -6,20 +6,41 @@
 
 #include "Texture.h"
 #include "Types.h"
+#include "Font.h"
 
 #include <unordered_map>
 
 #include "glm/glm.hpp"
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+
+#include <freetype/ftglyph.h>
+
+struct FontInfo {
+    FT_GlyphSlot glyph;
+    glm::vec2 coords;
+};
+
 typedef struct FontAtlas {
-    
-    std::unordered_map<char, glm::vec2> texMap;
+    NFont font;
+
+    std::unordered_map<char, FontInfo> texMap;
     Texture texture;
 
-    void packChar(char character);
-    glm::vec2 getChar(char character);
+    uint width;
+    uint height;
 
-    FontAtlas(uint width, uint height);
+    uint spriteWidth;
+    uint spriteHeight;
+
+    glm::vec2 cursor = glm::vec2(0, 0);
+
+    void packChar(char character, uint x, uint y);
+    FontInfo getChar(char character);
+
+    FontAtlas();
+    FontAtlas(uint width, uint height, NFont font);
 
 } FontAtlas;
 

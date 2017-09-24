@@ -32,7 +32,8 @@ typedef struct Buffer {
                     cursor.y--;
                 }
             } else {
-                currentLine.pop_back();
+                // currentLine.pop_back();
+                currentLine.erase(cursor.x - 1, 1);
                 cursor.x--;
             }
         }

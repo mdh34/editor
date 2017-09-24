@@ -20,6 +20,8 @@
 #include FT_FREETYPE_H
 
 typedef struct Texture {
+    Texture() {};
+
     Texture(std::string path);
     Texture(FT_GlyphSlot& bitmap);
     Texture(uint width, uint height);
@@ -28,6 +30,8 @@ typedef struct Texture {
     
     int width;
     int height;
+
+    SDL_Surface* surface;
 
     GLuint texID = 0;
 } Texture;

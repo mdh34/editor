@@ -10,11 +10,13 @@
 #include <string>
 
 typedef struct Editor {
-    Editor(Window& window, Renderer& renderer);
+    Editor();
 
-    Window& window;
-    Renderer& renderer;
+    Window window;
+    Renderer renderer;
     NFont font;
+
+    Texture texture;
     
     std::vector<Buffer> buffers;
     glm::vec2 visibleBounds;
@@ -29,6 +31,9 @@ typedef struct Editor {
     void render();
     
     unsigned int activeBuffer;
+
+    bool isOpen();
+    void destroy();
 
 } Editor;
 

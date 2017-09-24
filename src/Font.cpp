@@ -3,7 +3,7 @@
 
 NFont::NFont() {}
 
-NFont::NFont(std::string& path, unsigned int height) {
+NFont::NFont(std::string path, unsigned int height) {
     this->path = path;
     this->height = height;
 }

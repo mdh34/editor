@@ -30,7 +30,7 @@ typedef struct NFont {
     unsigned int advance;
 
     NFont();
-    NFont(std::string& path, unsigned int height);
+    NFont(std::string path, unsigned int height);
     
     int init();
 } NFont;

@@ -1,20 +1,35 @@
 
 #include "Editor.h"
 
-Editor::Editor(Window& window, Renderer& renderer)
-: window(window), renderer(renderer) {
-    
+Editor::Editor() {
+    int width = 1000;
+    int height = width / 16 * 9;
+
+    window = Window(width, height, "Editor");
+    renderer = Renderer(window.width, window.height);
+
+    renderer.projectionMatrix = glm::ortho(0.0f, (float)(window.width), (float)(window.height), 0.0f, -100.0f, 100.0f);;
+    renderer.translationMatrix = glm::mat4();
+    renderer.modelMatrix = glm::mat4();
+
+    renderer.mvpMatrix = glm::mat4();
+    renderer.init();
+
     std::string path = "/res/fonts/consolas.ttf";
     font = NFont(path, 18);
     font.init();
-    
+
     buffers.push_back(Buffer());
     activeBuffer = 0;
-    
-//    openFile("test.cpp");
+
+    //    openFile("test.cpp");
+
+    texture = Texture(256, 256);
 }
 
 void Editor::update() {
+    renderer.projectionMatrix = glm::ortho(0.0f, (float)(window.width), (float)(window.height), 0.0f, -100.0f, 100.0f);
+
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -53,12 +68,11 @@ void Editor::update() {
     time += 1;
 }
 
-Texture texture = Texture(256, 256);
-Texture texture2 = Texture("/res/textures/banana.png");
 void Editor::render() {
-    for(unsigned int i = 0; i < buffers.size(); i++) {
-//        renderer.drawString(font, buffers[i].contents, glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 1));
-        for (unsigned int j = 0; j < buffers[i].lines.size(); j++) {
+    window.clear();
+
+    for(uint i = 0; i < buffers.size(); i++) {
+        for (uint j = 0; j < buffers[i].lines.size(); j++) {
             renderer.drawString(font, buffers[i].lines[j], glm::vec3(0, j * font.height, 1), glm::vec4(1, 1, 1, 1));
         }
     }
@@ -75,9 +89,8 @@ void Editor::render() {
 
     Renderable2D renderable(glm::vec3(0, 0, 1), glm::vec2(800, 600));
     renderer.drawTexturedQuad(renderable, texture);
-    renderer.drawTexturedQuad(renderable, texture2);
 
-    
+    window.flip();
 }
 
 void Editor::openFile(std::string filePath) {
@@ -91,4 +104,12 @@ void Editor::openFile(std::string filePath) {
 
 void Editor::saveFile(std::string filePath) {
     
+}
+
+bool Editor::isOpen() {
+    return window.isOpen;
+}
+
+void Editor::destroy() {
+    window.destroy();
 }
