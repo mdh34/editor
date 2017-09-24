@@ -32,7 +32,7 @@ ShaderProgram();
 	int vertexShaderID;
 	int fragmentShaderID;
 
-    std::unordered_map <std::string, GLint > uniforms;
+    std::unordered_map <std::string, GLint> uniforms;
 
 	int createShader(char* source, GLenum type);
 

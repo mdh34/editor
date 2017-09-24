@@ -53,6 +53,8 @@ void Editor::update() {
     time += 1;
 }
 
+Texture texture = Texture(256, 256);
+Texture texture2 = Texture("/res/textures/banana.png");
 void Editor::render() {
     for(unsigned int i = 0; i < buffers.size(); i++) {
 //        renderer.drawString(font, buffers[i].contents, glm::vec3(0, 0, 0), glm::vec4(1, 1, 1, 1));
@@ -70,6 +72,11 @@ void Editor::render() {
                           2, font.height, glm::vec4(1, 1, 1, 1));
         
     }
+
+    Renderable2D renderable(glm::vec3(0, 0, 1), glm::vec2(800, 600));
+    renderer.drawTexturedQuad(renderable, texture);
+    renderer.drawTexturedQuad(renderable, texture2);
+
     
 }
 
