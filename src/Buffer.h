@@ -8,6 +8,7 @@
 
 #include <string>
 #include <algorithm>
+#include <iostream>
 
 typedef struct Buffer {
     std::vector<std::string> lines;
@@ -15,7 +16,7 @@ typedef struct Buffer {
     glm::vec2 cursor = glm::vec2(0, 0);
 
     Buffer() {
-        lines.push_back(std::string(""));
+        lines.push_back(std::string("Hello world"));
     }
 
     void delChar(bool forward) {
@@ -89,9 +90,17 @@ typedef struct Buffer {
     }
 
     void insert(std::string text) {
-        std::string currentLine = lines[cursor.y];
-        currentLine.insert((int) cursor.x, text);
-        cursor.x += text.size();
+        std::string& currentLine = lines[cursor.y];
+
+        if (cursor.x >= currentLine.length()) {
+            currentLine.append(text);
+            cursor.x += text.length();
+        }
+        else {
+            currentLine.insert((int) cursor.x, text);
+            cursor.x += text.length();
+        }
+
     }
 
     char& getChar(unsigned int x, unsigned int y) {
